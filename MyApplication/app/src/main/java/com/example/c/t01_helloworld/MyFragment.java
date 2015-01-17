@@ -22,7 +22,7 @@ public class MyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int count = Integer.parseInt(myTextView.getText().toString());
-                myTextView.setText(""+count);
+                myTextView.setText(""+(count++));
             }
         });
 

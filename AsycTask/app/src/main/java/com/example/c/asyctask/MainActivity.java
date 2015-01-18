@@ -1,17 +1,82 @@
 package com.example.c.asyctask;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    class MyAsyncTask extends AsyncTask<Integer, Integer, String>{
+        ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            dialog = new ProgressDialog(MainActivity.this);
+            dialog.setTitle("Loading...");
+            dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            dialog.setButton(ProgressDialog.BUTTON_NEGATIVE,"Cancel",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            dialog.setButton(ProgressDialog.BUTTON_POSITIVE, "OK",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Toast.makeText(MainActivity.this, s, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+
+            dialog.setProgress(values[0]);
+        }
+
+        @Override
+        protected String doInBackground(Integer... params) {
+
+            int progress = 0;
+            while(progress<params[0]){
+                publishProgress(progress);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                progress++;
+            }
+
+            return "DONE!!!";
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MyAsyncTask task = new MyAsyncTask();
+        task.execute(100);
     }
 
 

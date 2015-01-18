@@ -6,35 +6,56 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+class MyData {
+    int mImgIcon;
+    String mTitle, mSubTitle;
+
+    MyData(int imgIcon, String title, String subTitle) {
+        mImgIcon = imgIcon;
+        mTitle = title;
+        mSubTitle = subTitle;
+    }
+}
 
 public class MainActivity extends ActionBarActivity {
-    String[] list = {"Hello", "World", "Oracle", "Java",
-            "Hello", "World", "Oracle", "Java",
-            "Hello", "World", "Oracle", "Java",
-            "Hello", "World", "Oracle", "Java",};
+
+
+    ArrayList<MyData> list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        list = new ArrayList<MyData>();
+        list.add(new MyData(R.drawable.ic_launcher, "Title1", "SubTitle1"));
+        list.add(new MyData(R.drawable.ic_launcher, "Title2", "SubTitle2"));
+        list.add(new MyData(R.drawable.ic_launcher, "Title3", "SubTitle3"));
+        list.add(new MyData(R.drawable.ic_launcher, "Title4", "SubTitle4"));
+        list.add(new MyData(R.drawable.ic_launcher, "Title5", "SubTitle5"));
+        list.add(new MyData(R.drawable.ic_launcher, "Title6", "SubTitle6"));
+        list.add(new MyData(R.drawable.ic_launcher, "Title7", "SubTitle7"));
+
+
         ListView listView = (ListView)findViewById(R.id.listView);
 
 
-        ArrayAdapter<String> adapter;
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+        MyCustomAdapter adapter;
+        adapter = new MyCustomAdapter(this, R.layout.list_row, list);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //((TextView)view).getText().toString()
-                Toast.makeText(MainActivity.this, list[position], Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, list.get(position).mTitle, Toast.LENGTH_LONG).show();
             }
         });
+
     }
 
 

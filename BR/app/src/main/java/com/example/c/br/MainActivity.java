@@ -1,19 +1,54 @@
 package com.example.c.br;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    MyBR br;
+    MyBR_noti brNoti;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Button button = (Button)findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent("com.example.c.br");
+                sendBroadcast(intent);
+            }
+        });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        brNoti = new MyBR_noti();
+        String action = "com.example.c.br";
+        IntentFilter filter = new IntentFilter(action);
+        registerReceiver(brNoti, filter);
+
+//        br = new MyBR();
+//        String action = "android.provider.Telephony.SMS_RECEIVED";
+//        IntentFilter filter = new IntentFilter(action);
+//
+//        registerReceiver(br, filter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(brNoti);
+        //unregisterReceiver(br);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

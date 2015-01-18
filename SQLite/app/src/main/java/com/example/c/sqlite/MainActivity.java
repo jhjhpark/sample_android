@@ -4,6 +4,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -12,6 +13,19 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TextView textViewResult = (TextView) findViewById(R.id.textViewResult);
+        MySQLiteHandler myHandler = new MySQLiteHandler(this);
+        myHandler.insert("kim", 20, "seoul");
+        myHandler.insert("lee", 21, "seoul");
+        myHandler.insert("park", 22, "incheon");
+        myHandler.insert("kim2", 23, "busan");
+
+        myHandler.updateAge("lee",25);
+        myHandler.delete("park");
+
+        textViewResult.setText(myHandler.getAllData());
+
     }
 
 

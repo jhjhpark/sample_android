@@ -46,10 +46,10 @@ public class MainActivity extends ActionBarActivity {
             public void run() {
                 for(int i=0; i<20; i++){
                     count =i;
-                    textView.post(new Runnable() {
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            textView.setText("view post runnable count="+count);
+                            textView.setText("runonUIThread count"+count);
                         }
                     });
 

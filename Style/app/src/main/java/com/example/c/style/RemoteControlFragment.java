@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 /**
@@ -22,9 +24,6 @@ public class RemoteControlFragment extends Fragment {
 
         mSelectedTextView = (TextView) v.findViewById(R.id.fragment_remote_control_selectedTextView);
         mWorkingTextView = (TextView) v.findViewById(R.id.fragment_remote_control_workingTextView);
-        Button btnZero = (Button) v.findViewById(R.id.fragment_remote_control_zeroButton);
-        Button btnOne =  (Button) v.findViewById(R.id.fragment_remote_control_oneButton);
-        Button btnEnter = (Button) v.findViewById(R.id.fragment_remote_control_enterButton);
 
         View.OnClickListener numberButtonListener = new View.OnClickListener() {
             @Override
@@ -37,9 +36,35 @@ public class RemoteControlFragment extends Fragment {
 
             }
         };
-        btnZero.setOnClickListener(numberButtonListener);
-        btnOne.setOnClickListener(numberButtonListener);
-        btnEnter.setOnClickListener(new View.OnClickListener() {
+
+        TableLayout tableLayout = (TableLayout) v.findViewById(R.id.fragment_remote_control_tableLayout);
+        int number = 1;
+        for(int i=2; i<tableLayout.getChildCount()-1; i++){
+            TableRow tableRow = (TableRow) tableLayout.getChildAt(i);
+            for(int k=0; k<tableRow.getChildCount(); k++){
+                Button button = (Button) tableRow.getChildAt(k);
+                button.setText(""+number);
+                number++;
+                button.setOnClickListener(numberButtonListener);
+            }
+
+        }
+        TableRow bottomRow = (TableRow) tableLayout.getChildAt( tableLayout.getChildCount()-1 );
+        Button deleteButton = (Button) bottomRow.getChildAt(0);
+        deleteButton.setText("DELETE");
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mWorkingTextView.setText("0");
+            }
+        });
+        Button zeroButton = (Button)bottomRow.getChildAt(1);
+        zeroButton.setText("0");
+        zeroButton.setOnClickListener(numberButtonListener);
+
+        Button enterButton = (Button)bottomRow.getChildAt(2);
+        enterButton.setText("ENTER");
+        enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String working = mWorkingTextView.getText().toString();

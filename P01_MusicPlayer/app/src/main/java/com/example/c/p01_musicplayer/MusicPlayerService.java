@@ -16,6 +16,7 @@ public class MusicPlayerService extends Service {
         }
     }
     public MusicPlayerService() {
+        MediaPlayerSQLiteHandler mHandler = new MediaPlayerSQLiteHandler(this);
     }
 
     @Override
